@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc";
+option java_outer_classname = "DirectoryProto";
+
+service DirectoryService {
+    rpc createDirectory (CreateDirectoryRequest) returns (CreateDirectoryResponse);
+}
+
+message CreateDirectoryRequest {
+    string path = 1;
+}
+
+message CreateDirectoryResponse {
+    string path = 1;
+    string owner = 2;
+    google.protobuf.Timestamp createdAt = 3;
+}
