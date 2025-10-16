@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.grpc";
+option java_outer_classname = "FileNodeProto";
+
+// Servicio para operaciones de archivos en el nodo de almacenamiento
+service FileNodeService {
+  // Mueve o renombra un archivo/directorio dentro del root del nodo
+  rpc MoveOrRename (MoveOrRenameRequest) returns (MoveOrRenameResponse);
+
+  // Elimina un archivo o un directorio (debe estar vacío si es directorio)
+  rpc DeleteFile (DeleteFileRequest) returns (DeleteFileResponse);
+}
+
+// Códigos de respuesta estándar para operaciones de archivo
+enum ResponseCode {
+  OK = 0;
+  NOT_FOUND = 1;
+  DEST_EXISTS = 2;
+  OUT_OF_ROOT = 3;
+  PERMISSION_DENIED = 4;
+  INVALID_PATH = 5;
+  IO_ERROR = 6;
+}
+
+message MoveOrRenameRequest {
+  string source_path = 1;
+  string destination_path = 2;
+}
+
+message MoveOrRenameResponse {
+  bool success = 1;
+  ResponseCode code = 2;
+  string message = 3;
+  string resulting_path = 4; // ruta final del recurso
+}
+
+message DeleteFileRequest {
+  string path = 1;
+}
+
+message DeleteFileResponse {
+  bool success = 1;
+  ResponseCode code = 2;
+  string message = 3;
+}
